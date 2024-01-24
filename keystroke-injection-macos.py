@@ -32,7 +32,7 @@ time.sleep(0.5)
 # - assume the address of the Magic Keyboard
 log.status("configuring Bluetooth adapter")
 adapter = Adapter(args.interface)
-adapter.set_name("Hi, My Name is Keyboard")
+adapter.set_name("Keyboard")
 adapter.set_class(0x002540)
 adapter.set_address(args.keyboard_address)
 client = KeyboardClient(args.target_address, auto_ack=True)
